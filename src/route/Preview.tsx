@@ -187,7 +187,8 @@ export default inject('store')(
         schema: {
           type: 'page',
           title: value.label,
-          body: '这是你刚刚新增的页面。'
+          body: '这是你刚刚新增的页面。',
+          regions: ['body']
         }
       });
       store.setAddPageIsOpen(false);
