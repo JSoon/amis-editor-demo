@@ -20,6 +20,41 @@ const disabledRenderers = [
   'sparkline' // 走势图
 ];
 
+// 表单构建编辑器组件
+const formRenderers = [
+  'my-my',
+  'my-renderer',
+  'form',
+  'input-text',
+  'textarea',
+  'input-rich-text',
+  'input-number',
+  'radios',
+  'checkboxes',
+  'select',
+  'input-date',
+  'input-date-range',
+  'input-file',
+  'input-image'
+];
+
+// 获取 hash 中的 query string
+function getUrlHashQuery(name: string) {
+  // 获取 hash 部分
+  const hash = window.location.hash;
+  // 检查 hash 中是否包含 query string
+  const hashIndex = hash.indexOf('?');
+  if (hashIndex !== -1) {
+    // 提取 query string
+    const queryString = hash.substring(hashIndex + 1);
+    // 使用 URLSearchParams 解析 query string
+    const urlParams = new URLSearchParams(queryString);
+    return urlParams.get(name);
+  } else {
+    return '';
+  }
+}
+
 export class ManagerEditorPlugin extends BasePlugin {
   order = 9999;
 
@@ -28,17 +63,29 @@ export class ManagerEditorPlugin extends BasePlugin {
     renderers: Array<SubRendererInfo>
   ): BasicSubRenderInfo | Array<BasicSubRenderInfo> | void {
     console.log('renderers', renderers);
-    // 更新NPM自定义组件排序和分类
-    for (let index = 0, size = renderers.length; index < size; index++) {
-      // 判断是否需要隐藏 Editor预置组件
-      const pluginRendererName = renderers[index].rendererName;
-      if (
-        pluginRendererName &&
-        disabledRenderers.indexOf(pluginRendererName) > -1
-      ) {
-        renderers[index].disabledRendererPlugin = true; // 更新状态
+    const editorType = getUrlHashQuery('editorType');
+    // 根据编辑器类型，展示不同的组件
+    renderers.forEach(r => {
+      // 初始化
+      r.disabledRendererPlugin = true;
+      const pluginRendererName = r.rendererName as string;
+      // 表单构建编辑器
+      if (editorType === 'form') {
+        if (formRenderers.includes(pluginRendererName)) {
+          r.disabledRendererPlugin = false;
+          // 将所有组件标识为系统组件，避免出现自定义组件页签影响体验
+          r.isBaseComponent = true;
+        }
       }
-    }
+      // 默认根据 disabledRenderers 进行展示
+      else {
+        if (!disabledRenderers.includes(pluginRendererName)) {
+          r.disabledRendererPlugin = true;
+        } else {
+          r.disabledRendererPlugin = false;
+        }
+      }
+    });
   }
 }
 

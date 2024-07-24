@@ -138,7 +138,11 @@ export default inject('store')(
                 className={'navbtn fa fa-pencil'}
                 onClick={(e: React.MouseEvent) => {
                   e.preventDefault();
-                  history.push(`/edit/${paths.indexOf(link.path)}`);
+                  const editorType =
+                    window.localStorage.getItem('editorType') || 'form';
+                  history.push(
+                    `/edit/${paths.indexOf(link.path)}?editorType=${editorType}`
+                  );
                 }}
               />
             );
