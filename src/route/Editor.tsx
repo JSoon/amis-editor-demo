@@ -70,7 +70,7 @@ export default inject('store')(
       <div className="Editor-Demo">
         <div className="Editor-header">
           <div className="Editor-title">amis 可视化编辑器</div>
-          <div className="Editor-view-mode-group-container">
+          {/* <div className="Editor-view-mode-group-container">
             <div className="Editor-view-mode-group">
               <div
                 className={`Editor-view-mode-btn editor-header-icon ${
@@ -93,17 +93,19 @@ export default inject('store')(
                 <Icon icon="h5-preview" title="移动模式" />
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="Editor-header-actions">
-            <ShortcutKey />
-            <Select
+            <div className="flex mr-2">
+              <ShortcutKey />
+            </div>
+            {/* <Select
               className="margin-left-space"
               options={editorLanguages}
               value={curLanguage}
               clearable={false}
               onChange={(e: any) => changeLocale(e.value)}
-            />
+            /> */}
             <div
               className={`header-action-btn m-1 ${
                 store.preview ? 'primary' : ''

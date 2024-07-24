@@ -27,6 +27,7 @@ export class ManagerEditorPlugin extends BasePlugin {
     context: RendererEventContext,
     renderers: Array<SubRendererInfo>
   ): BasicSubRenderInfo | Array<BasicSubRenderInfo> | void {
+    console.log('renderers', renderers);
     // 更新NPM自定义组件排序和分类
     for (let index = 0, size = renderers.length; index < size; index++) {
       // 判断是否需要隐藏 Editor预置组件
