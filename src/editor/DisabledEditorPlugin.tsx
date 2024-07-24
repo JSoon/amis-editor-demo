@@ -22,8 +22,6 @@ const disabledRenderers = [
 
 // 表单构建编辑器组件
 const formRenderers = [
-  'my-my',
-  'my-renderer',
   'form',
   'input-text',
   'textarea',
@@ -32,6 +30,7 @@ const formRenderers = [
   'radios',
   'checkboxes',
   'select',
+  'dict-select',
   'input-date',
   'input-date-range',
   'input-file',
