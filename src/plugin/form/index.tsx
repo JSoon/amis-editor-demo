@@ -1,1 +1,2 @@
 import './DictSelect';
+import './DictRadios';

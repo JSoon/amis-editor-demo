@@ -2,7 +2,7 @@ import React from 'react';
 import {Renderer, RendererProps} from 'amis';
 import {FormField} from 'amis-ui';
 
-export interface DictSelectProps extends RendererProps {
+export interface DictRadiosProps extends RendererProps {
   // 字段名
   name: string;
   // 字典类型
@@ -13,10 +13,10 @@ export interface DictSelectProps extends RendererProps {
   required?: boolean;
 }
 @Renderer({
-  type: 'dict-select',
-  name: 'dict-select'
+  type: 'dict-radios',
+  name: 'dict-radios'
 })
-export default class DictSelectRenderer extends React.Component<DictSelectProps> {
+export default class DictRadiosRenderer extends React.Component<DictRadiosProps> {
   render() {
     const {formMode, formLabelAlign, name, label, dictType, required} =
       this.props;

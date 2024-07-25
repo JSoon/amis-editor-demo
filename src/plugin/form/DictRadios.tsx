@@ -6,25 +6,25 @@ import {
   getSchemaTpl,
   registerEditorPlugin
 } from 'amis-editor';
-import '../../renderer/form/DictSelect';
+import '../../renderer/form/DictRadios';
 
-export default class DictSelectPlugin extends BasePlugin {
+export default class DictRadiosPlugin extends BasePlugin {
   // 这里要跟对应的渲染器名字对应上
   // 注册渲染器的时候会要求指定渲染器名字
-  rendererName = 'dict-select';
+  rendererName = 'dict-radios';
 
   // 暂时只支持这个，配置后会开启代码编辑器
   $schema = '/schemas/UnkownSchema.json';
 
   // 用来配置名称和描述
-  name = '字典下拉框';
+  name = '字典单选框';
   description = '从字典数据获取选项';
 
   // tag，决定会在哪个 tab 下面显示的
   tags = ['表单项'];
 
   // 图标
-  icon = 'fa fa-caret-square-o-down';
+  icon = 'fa fa-dot-circle-o';
 
   // 用来生成预览图的
   previewSchema = {
@@ -33,9 +33,9 @@ export default class DictSelectPlugin extends BasePlugin {
     wrapWithPanel: false,
     body: [
       {
-        type: 'select',
-        name: 'select',
-        label: '下拉框',
+        type: 'radios',
+        name: 'radios',
+        label: '单选框',
         labelWidth: 60,
         size: 'sm',
         options: [
@@ -54,9 +54,9 @@ export default class DictSelectPlugin extends BasePlugin {
 
   // 拖入组件里面时的初始数据
   scaffold = {
-    type: 'dict-select',
+    type: 'dict-radios',
     name: '',
-    label: '下拉框',
+    label: '单选框',
     dictType: '',
     switch: false
   };
@@ -95,4 +95,4 @@ export default class DictSelectPlugin extends BasePlugin {
   ]);
 }
 
-registerEditorPlugin(DictSelectPlugin);
+registerEditorPlugin(DictRadiosPlugin);

@@ -29,6 +29,7 @@ const formRenderers = [
   'input-rich-text',
   'input-number',
   'radios',
+  'dict-radios',
   'checkboxes',
   'select',
   'dict-select',
