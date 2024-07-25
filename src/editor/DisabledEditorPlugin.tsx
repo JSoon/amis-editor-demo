@@ -31,6 +31,7 @@ const formRenderers = [
   'radios',
   'dict-radios',
   'checkboxes',
+  'dict-checkboxes',
   'select',
   'dict-select',
   'input-date',
