@@ -1,0 +1,9 @@
+/**
+ * 自定义样式
+ */
+
+// 隐藏表单创建中的输入类型：表格编辑、组合输入
+#downshift-8-item-9,
+#downshift-8-item-10 {
+  display: none !important;
+}

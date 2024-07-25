@@ -7,7 +7,7 @@ import {currentLocale} from 'i18n-runtime';
 import {Icon} from '../icons/index';
 import {IMainStore} from '../store';
 import '../editor/DisabledEditorPlugin'; // 用于隐藏一些不需要的Editor预置组件
-import '../plugin/form';
+import {getUrlHashQuery} from '../utils';
 
 let currentIndex = -1;
 
@@ -40,6 +40,7 @@ export default inject('store')(
   }: {store: IMainStore} & RouteComponentProps<{id: string}>) {
     const index: number = parseInt(match.params.id, 10);
     const curLanguage = currentLocale(); // 获取当前语料类型
+    const editorType = getUrlHashQuery('editorType');
 
     if (index !== currentIndex) {
       currentIndex = index;
@@ -105,16 +106,18 @@ export default inject('store')(
               clearable={false}
               onChange={(e: any) => changeLocale(e.value)}
             /> */}
-            <div
-              className={`header-action-btn m-1 ${
-                store.preview ? 'primary' : ''
-              }`}
-              onClick={() => {
-                store.setPreview(!store.preview);
-              }}
-            >
-              {store.preview ? '编辑' : '预览'}
-            </div>
+            {editorType !== 'form' || store.preview ? (
+              <div
+                className={`header-action-btn m-1 ${
+                  store.preview ? 'primary' : ''
+                }`}
+                onClick={() => {
+                  store.setPreview(!store.preview);
+                }}
+              >
+                {store.preview ? '编辑' : '预览'}
+              </div>
+            ) : null}
             {!store.preview && (
               <div className={`header-action-btn exit-btn`} onClick={exit}>
                 退出

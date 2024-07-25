@@ -5,6 +5,7 @@ import {
   BasicSubRenderInfo,
   PluginInterface
 } from 'amis-editor';
+import {getUrlHashQuery} from '../utils';
 
 /**
  * 用于隐藏一些不需要的Editor组件
@@ -36,23 +37,6 @@ const formRenderers = [
   'input-file',
   'input-image'
 ];
-
-// 获取 hash 中的 query string
-function getUrlHashQuery(name: string) {
-  // 获取 hash 部分
-  const hash = window.location.hash;
-  // 检查 hash 中是否包含 query string
-  const hashIndex = hash.indexOf('?');
-  if (hashIndex !== -1) {
-    // 提取 query string
-    const queryString = hash.substring(hashIndex + 1);
-    // 使用 URLSearchParams 解析 query string
-    const urlParams = new URLSearchParams(queryString);
-    return urlParams.get(name);
-  } else {
-    return '';
-  }
-}
 
 export class ManagerEditorPlugin extends BasePlugin {
   order = 9999;
