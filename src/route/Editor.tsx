@@ -8,6 +8,7 @@ import {Icon} from '../icons/index';
 import {IMainStore} from '../store';
 import '../editor/DisabledEditorPlugin'; // 用于隐藏一些不需要的Editor预置组件
 import {getUrlHashQuery} from '../utils';
+import axios from 'axios';
 
 let currentIndex = -1;
 
@@ -42,24 +43,55 @@ export default inject('store')(
     const curLanguage = currentLocale(); // 获取当前语料类型
     const editorType = getUrlHashQuery('editorType');
 
-    if (index !== currentIndex) {
-      currentIndex = index;
-      store.updateSchema(store.pages[index].schema);
+    function onInit() {
+      // 编辑
+      if (index !== -1) {
+        store.updateSchema(store.pages[index].schema);
+        // TODO: 通过 index 异步获取 i-spark 表单构建 schema
+        //
+      }
+      // 新增
+      else {
+        store.updateSchema({
+          type: 'page',
+          title: '新增页面',
+          regions: ['body']
+        });
+      }
     }
 
     function save() {
-      store.updatePageSchemaAt(index);
-      toast.success('保存成功', '提示');
+      // 新增页面不更新 page schema
+      if (index !== -1) {
+        store.updatePageSchemaAt(index);
+        toast.success('保存成功', '提示');
+      }
     }
 
     function onChange(value: any) {
       store.updateSchema(value);
-      store.updatePageSchemaAt(index);
+      // 新增页面不更新 page schema
+      if (index !== -1) {
+        store.updatePageSchemaAt(index);
+      }
     }
 
     function changeLocale(value: string) {
       localStorage.setItem('suda-i18n-locale', value);
       window.location.reload();
+    }
+
+    // 提交到 i-spark 表单构建
+    function submit() {
+      console.log('submit', store.schema);
+      // axios({
+      //   method: 'post',
+      //   url: 'https://www.i-spark.com/api/form/create',
+      //   data: {
+      //     id: currentIndex,
+      //     schema: store.schema
+      //   }
+      // });
     }
 
     function exit() {
@@ -119,9 +151,14 @@ export default inject('store')(
               </div>
             ) : null}
             {!store.preview && (
-              <div className={`header-action-btn exit-btn`} onClick={exit}>
-                退出
-              </div>
+              <>
+                <div className={`header-action-btn`} onClick={submit}>
+                  提交
+                </div>
+                <div className={`header-action-btn exit-btn`} onClick={exit}>
+                  退出
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -131,6 +168,7 @@ export default inject('store')(
             preview={store.preview}
             isMobile={store.isMobile}
             value={store.schema}
+            onInit={onInit}
             onChange={onChange}
             onPreview={() => {
               store.setPreview(true);
