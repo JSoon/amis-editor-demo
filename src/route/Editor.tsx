@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Editor, ShortcutKey} from 'amis-editor';
 import {inject, observer} from 'mobx-react';
 import {RouteComponentProps} from 'react-router-dom';
-import {toast, Select} from 'amis';
+import {toast, Select, ConfirmBox, FormField, InputBox} from 'amis';
 import {currentLocale} from 'i18n-runtime';
 import {Icon} from '../icons/index';
 import {IMainStore} from '../store';
@@ -31,6 +31,9 @@ const editorLanguages = [
     value: 'en-US'
   }
 ];
+
+// i-spark 接口基础路径
+const BASE_API = window.VITE_APP_BASE_API;
 
 export default inject('store')(
   observer(function ({
@@ -82,16 +85,33 @@ export default inject('store')(
     }
 
     // 提交到 i-spark 表单构建
-    function submit() {
+    const [submitVisible, setSubmitVisible] = useState(false);
+    const [formName, setFormName] = useState('');
+    async function submit() {
+      if (!formName.trim()) {
+        return toast.error('请输入表单名称');
+      }
       console.log('submit', store.schema);
-      // axios({
-      //   method: 'post',
-      //   url: 'https://www.i-spark.com/api/form/create',
-      //   data: {
-      //     id: currentIndex,
-      //     schema: store.schema
-      //   }
-      // });
+      const {code}: any = await axios({
+        method: 'post',
+        url: `${BASE_API}/systemTools/formBuild/${
+          index === -1 ? 'insert' : 'update'
+        }`,
+        data: {
+          id: index === -1 ? null : index,
+          formName,
+          schemaData: JSON.stringify(store.schema)
+        }
+      });
+      if (code !== 200) {
+        return toast.error('提交失败');
+      }
+      toast.success('提交成功');
+      // 成功后，刷新原页面，关闭设计器
+      setTimeout(() => {
+        window.opener?.location.reload();
+        window.close();
+      }, 1000);
     }
 
     function exit() {
@@ -152,7 +172,10 @@ export default inject('store')(
             ) : null}
             {!store.preview && (
               <>
-                <div className={`header-action-btn`} onClick={submit}>
+                <div
+                  className={`header-action-btn`}
+                  onClick={() => setSubmitVisible(true)}
+                >
                   提交
                 </div>
                 <div className={`header-action-btn exit-btn`} onClick={exit}>
@@ -185,6 +208,21 @@ export default inject('store')(
             }}
           />
         </div>
+        {/* 表单提交弹窗 */}
+        <ConfirmBox
+          title={index === -1 ? '新增' : '编辑'}
+          show={submitVisible}
+          onCancel={() => setSubmitVisible(false)}
+          onConfirm={submit}
+        >
+          <FormField type="input-text" label="表单名称" isRequired={true}>
+            <InputBox
+              placeholder="请输入表单名称，最多50字"
+              maxLength={50}
+              onChange={(value: string) => setFormName(value)}
+            />
+          </FormField>
+        </ConfirmBox>
       </div>
     );
   })

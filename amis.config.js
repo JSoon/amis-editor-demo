@@ -1,6 +1,7 @@
 'use strict';
 const path = require('path');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const webpack = require('webpack');
 // 统一路径解析
 function resolve(dir) {
   return path.resolve(__dirname, dir);
@@ -39,7 +40,11 @@ module.exports = {
     // cssLoaderUrl: true,
     // cssLoaderUrlDir: 'editor/fontawesome-free',
     moduleRules: [], // 用于配置自定义loaders
-    plugins: [] // 用于配置自定义plugins
+    plugins: [
+      new webpack.DefinePlugin({
+        'window.VITE_APP_BASE_API': JSON.stringify('/api')
+      })
+    ] // 用于配置自定义plugins
   },
   dev: {
     entry: {
@@ -83,7 +88,15 @@ module.exports = {
     productionSourceMap: false,
     productionGzip: false,
     productionGzipExtensions: ['js', 'css', 'json'],
-    plugins: [new MonacoWebpackPlugin()],
+    plugins: [
+      new MonacoWebpackPlugin(),
+      new webpack.DefinePlugin({
+        'window.VITE_APP_BASE_API':
+          process.env.VITE_APP_ENV !== 'prod'
+            ? JSON.stringify('/api')
+            : JSON.stringify('/mren')
+      })
+    ],
     bundleAnalyzerReport: false
   }
 };
