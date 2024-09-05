@@ -107,10 +107,10 @@ export default inject('store')(
       if (code !== 200) {
         return toast.error('提交失败');
       }
-      toast.success('提交成功');
       // 成功后，刷新原页面，关闭设计器
+      toast.success('提交成功');
+      window.opener?.location.reload();
       setTimeout(() => {
-        window.opener?.location.reload();
         window.close();
       }, 1000);
     }
