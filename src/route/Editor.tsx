@@ -92,7 +92,7 @@ export default inject('store')(
         return toast.error('请输入表单名称');
       }
       console.log('submit', store.schema);
-      const {code}: any = await axios({
+      const res = await axios({
         method: 'post',
         url: `${BASE_API}/systemTools/formBuild/${
           index === -1 ? 'insert' : 'update'
@@ -103,6 +103,7 @@ export default inject('store')(
           schemaData: JSON.stringify(store.schema)
         }
       });
+      const {code} = res.data;
       if (code !== 200) {
         return toast.error('提交失败');
       }
