@@ -60,6 +60,7 @@ export default inject('store')(
         }
         const schemaData = JSON.parse(data.schemaData || '{}');
         store.updateSchema(schemaData);
+        setFormName(data.formName);
       }
       // 新增
       else {
