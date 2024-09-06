@@ -224,6 +224,7 @@ export default inject('store')(
             <InputBox
               placeholder="请输入表单名称，最多50字"
               maxLength={50}
+              value={formName}
               onChange={(value: string) => setFormName(value)}
             />
           </FormField>
