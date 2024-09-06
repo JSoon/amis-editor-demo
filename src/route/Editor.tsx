@@ -46,12 +46,20 @@ export default inject('store')(
     const curLanguage = currentLocale(); // 获取当前语料类型
     const editorType = getUrlHashQuery('editorType');
 
-    function onInit() {
+    async function onInit() {
       // 编辑
       if (index !== -1) {
-        store.updateSchema(store.pages[index].schema);
-        // TODO: 通过 index 异步获取 i-spark 表单构建 schema
-        //
+        // 通过 index 异步获取 i-spark 表单构建 schema
+        const res = await axios({
+          method: 'post',
+          url: `${BASE_API}/systemTools/formBuild/queryById/${index}`
+        });
+        const {code, data} = res.data;
+        if (code !== 200) {
+          return toast.error('表单数据获取失败');
+        }
+        const schemaData = JSON.parse(data.schemaData || '{}');
+        store.updateSchema(schemaData);
       }
       // 新增
       else {
@@ -64,19 +72,13 @@ export default inject('store')(
     }
 
     function save() {
-      // 新增页面不更新 page schema
-      if (index !== -1) {
-        store.updatePageSchemaAt(index);
-        toast.success('保存成功', '提示');
-      }
+      store.updatePageSchemaAt(index);
+      toast.success('保存成功', '提示');
     }
 
     function onChange(value: any) {
       store.updateSchema(value);
-      // 新增页面不更新 page schema
-      if (index !== -1) {
-        store.updatePageSchemaAt(index);
-      }
+      // store.updatePageSchemaAt(index);
     }
 
     function changeLocale(value: string) {
@@ -107,12 +109,13 @@ export default inject('store')(
       if (code !== 200) {
         return toast.error('提交失败');
       }
+
       // 成功后，刷新原页面，关闭设计器
       toast.success('提交成功');
       window.opener?.location.reload();
-      setTimeout(() => {
-        window.close();
-      }, 1000);
+      // setTimeout(() => {
+      //   window.close();
+      // }, 1000);
     }
 
     function exit() {
@@ -197,7 +200,7 @@ export default inject('store')(
             onPreview={() => {
               store.setPreview(true);
             }}
-            onSave={save}
+            // onSave={save}
             className="is-fixed"
             $schemaUrl={schemaUrl}
             showCustomRenderersPanel={true}
