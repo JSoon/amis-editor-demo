@@ -67,9 +67,9 @@ export class ManagerEditorPlugin extends BasePlugin {
       // 默认根据 disabledRenderers 进行展示
       else {
         if (!disabledRenderers.includes(pluginRendererName)) {
-          r.disabledRendererPlugin = true;
-        } else {
           r.disabledRendererPlugin = false;
+        } else {
+          r.disabledRendererPlugin = true;
         }
       }
     });

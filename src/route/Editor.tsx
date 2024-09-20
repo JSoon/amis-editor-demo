@@ -47,6 +47,10 @@ export default inject('store')(
     const editorType = getUrlHashQuery('editorType');
 
     async function onInit() {
+      // 本地开发时，直接获取本地数据，用于本地调试，正式环境通过接口获取 schema
+      // store.updateSchema(store.pages[index].schema);
+      // return;
+
       // 编辑
       if (index !== -1) {
         // 通过 index 异步获取 i-spark 表单构建 schema
