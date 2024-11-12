@@ -130,7 +130,7 @@ export default inject('store')(
     return (
       <div className="Editor-Demo">
         <div className="Editor-header">
-          <div className="Editor-title">amis 可视化编辑器</div>
+          <div className="Editor-title">i-spark 可视化编辑器</div>
           {/* <div className="Editor-view-mode-group-container">
             <div className="Editor-view-mode-group">
               <div
