@@ -1,5 +1,6 @@
 import React from 'react';
 import {Renderer, RendererProps} from 'amis';
+import Container from 'amis/lib/renderers/Container';
 
 export interface RendererDemoProps extends RendererProps {
   target: string;
@@ -12,6 +13,11 @@ export default class RendererDemoRenderer extends React.Component<RendererDemoPr
   render() {
     const {target} = this.props;
 
-    return <p>Hello {target}! @amis-editor</p>;
+    return (
+      //@ts-ignore
+      <Container {...this.props} children={}>
+        <p>Hello {target}! @amis-editor</p>
+      </Container>
+    );
   }
 }
