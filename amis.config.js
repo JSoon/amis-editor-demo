@@ -39,7 +39,16 @@ module.exports = {
     template: resolve('./src/index.html'), // 使用自己的html模板
     // cssLoaderUrl: true,
     // cssLoaderUrlDir: 'editor/fontawesome-free',
-    moduleRules: [], // 用于配置自定义loaders
+    moduleRules: [
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader'
+          }
+        ]
+      }
+    ], // 用于配置自定义loaders
     plugins: [
       new webpack.DefinePlugin({
         'window.VITE_APP_BASE_API': JSON.stringify('/api')

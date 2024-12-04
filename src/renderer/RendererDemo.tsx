@@ -1,6 +1,7 @@
 import React from 'react';
 import {Renderer, RendererProps} from 'amis';
 import Container from 'amis/lib/renderers/Container';
+import demoImage from './assets/dataVisualization/demo.png';
 
 export interface RendererDemoProps extends RendererProps {
   target: string;
@@ -11,13 +12,25 @@ export interface RendererDemoProps extends RendererProps {
 })
 export default class RendererDemoRenderer extends React.Component<RendererDemoProps> {
   render() {
-    const {target} = this.props;
+    const {target, width, height} = this.props;
+    console.log(this.props);
 
     return (
       //@ts-ignore
-      <Container {...this.props} children={}>
-        <p>Hello {target}! @amis-editor</p>
-      </Container>
+      <Container
+        {...this.props}
+        bodyClassName="h-full"
+        children={() => (
+          <img
+            src={demoImage}
+            style={{
+              display: 'block',
+              width: '100%',
+              height: '100%'
+            }}
+          />
+        )}
+      />
     );
   }
 }

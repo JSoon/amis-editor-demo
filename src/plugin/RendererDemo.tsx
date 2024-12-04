@@ -1,7 +1,7 @@
-import {BasePlugin, registerEditorPlugin} from 'amis-editor';
+import {LayoutBasePlugin, registerEditorPlugin} from 'amis-editor';
 import '../renderer/RendererDemo';
 
-export class RendererDemoPlugin extends BasePlugin {
+export class RendererDemoPlugin extends LayoutBasePlugin {
   rendererName = 'renderer-demo';
 
   // 暂时只支持这个，配置后会开启代码编辑器
