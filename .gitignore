@@ -63,5 +63,6 @@ typings/
 gh-pages
 /public
 .DS_Store
+packages
 
 package-lock.json
