@@ -47,7 +47,7 @@ export default inject('store')(
     const editorType = getUrlHashQuery('editorType');
 
     async function onInit() {
-      // 本地开发时，直接获取本地数据，用于本地调试，正式环境通过接口获取 schema
+      // NOTE: 本地开发时，直接获取本地数据，用于本地调试，正式环境通过接口获取 schema
       // store.updateSchema(store.pages[index].schema);
       // return;
 
@@ -205,6 +205,7 @@ export default inject('store')(
             onPreview={() => {
               store.setPreview(true);
             }}
+            // NOTE: 本地开发时，可以打开这个调试
             // onSave={save}
             className="is-fixed"
             $schemaUrl={schemaUrl}

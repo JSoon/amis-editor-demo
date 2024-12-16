@@ -1,7 +1,10 @@
 'use strict';
 const path = require('path');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const webpack = require('webpack');
+
+// i-spark 发布路径
+const VITE_BASE_URL = '/mrenweb/';
+
 // 统一路径解析
 function resolve(dir) {
   return path.resolve(__dirname, dir);
@@ -49,11 +52,7 @@ module.exports = {
         ]
       }
     ], // 用于配置自定义loaders
-    plugins: [
-      new webpack.DefinePlugin({
-        'window.VITE_APP_BASE_API': JSON.stringify('/api')
-      })
-    ] // 用于配置自定义plugins
+    plugins: [] // 用于配置自定义plugins
   },
   dev: {
     entry: {
@@ -92,20 +91,12 @@ module.exports = {
     // 用于构建生产环境代码的相关配置信息
     NODE_ENV: 'production',
     assetsRoot: resolve('./lowcode/editor'), // 打包后的文件绝对路径（物理路径）
-    assetsPublicPath: '/mrenweb/lowcode/editor/', // 设置静态资源的引用路径（根域名+路径）
+    assetsPublicPath: `${VITE_BASE_URL}lowcode/editor/`, // 设置静态资源的引用路径（根域名+路径）
     assetsSubDirectory: '', // 资源引用二级路径
     productionSourceMap: false,
     productionGzip: false,
     productionGzipExtensions: ['js', 'css', 'json'],
-    plugins: [
-      new MonacoWebpackPlugin(),
-      new webpack.DefinePlugin({
-        'window.VITE_APP_BASE_API':
-          process.env.VITE_APP_ENV !== 'prod'
-            ? JSON.stringify('/api')
-            : JSON.stringify('/mren')
-      })
-    ],
+    plugins: [new MonacoWebpackPlugin()],
     bundleAnalyzerReport: false
   }
 };
