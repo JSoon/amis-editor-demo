@@ -33,7 +33,7 @@ const editorLanguages = [
 ];
 
 // i-spark 接口基础路径
-const BASE_API = window.VITE_APP_BASE_API;
+const BASE_API = window.localStorage.getItem('VITE_APP_BASE_API');
 
 export default inject('store')(
   observer(function ({
